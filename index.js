@@ -29,20 +29,22 @@ client.on("messageCreate", async (message) => {
 
 client.on("messageDelete", async (message) => {
   console.log(message.content + " mesajı silindi, id: " + message.id);
-  message.channel.send(`
-  ${message.author.username} adlı kullanıcı tarafından silinen mesaj: ${message.content}
-  `);
-  await MessageModel.findOneAndUpdate(
-    {
-      messageId: message.id,
-    },
-    {
-      $set: {
-        isDeleted: true,
-        deletedAt: Date.now(),
+  if (message.author.username === "hahmetulker") {
+    message.channel.send(`
+    ${message.author.username} adlı kullanıcı tarafından silinen mesaj: ${message.content}
+    `);
+    await MessageModel.findOneAndUpdate(
+      {
+        messageId: message.id,
       },
-    }
-  );
+      {
+        $set: {
+          isDeleted: true,
+          deletedAt: Date.now(),
+        },
+      }
+    );
+  }
 });
 
 client.login(process.env.SECRET_TOKEN);
